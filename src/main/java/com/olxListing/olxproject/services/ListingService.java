@@ -16,4 +16,6 @@ public interface ListingService {
 
 	public User_Entity displayContactDetails(int id);
 
+	public Listing updateListing(Listing listing);
+
 }

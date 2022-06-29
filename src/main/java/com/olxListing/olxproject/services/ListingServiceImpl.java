@@ -27,8 +27,13 @@ public class ListingServiceImpl implements ListingService{
 
 	@Override
 	public User_Entity displayContactDetails(int id) {
-		Listing listing =  listingRepo.getById(id);
+		Listing listing =  listingRepo.findById(id).get();
 		return listing.getUserEntity();
+	}
+
+	@Override
+	public Listing updateListing(Listing listing) {
+		return listingRepo.save(listing);
 	}
 
 }

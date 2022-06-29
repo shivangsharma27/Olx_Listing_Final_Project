@@ -4,8 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Entity
@@ -19,18 +22,19 @@ public class Listing {
 	String name;
 	int price;
 	String description;
-	String location;
+	
+	@OneToOne
+	Location location;
 	
 	@ManyToOne
 	User_Entity userEntity;
 	
 	public Listing() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 
-	public Listing(int id, String name, int price, String description, String location, User_Entity userEntity) {
+	public Listing(int id, String name, int price, String description, Location location, User_Entity userEntity) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -73,15 +77,15 @@ public class Listing {
 		this.description = description;
 	}
 
-	public String getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
-	public void setLocation(String location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 	
-	
+	@JsonBackReference
 	public User_Entity getUserEntity() {
 		return userEntity;
 	}
