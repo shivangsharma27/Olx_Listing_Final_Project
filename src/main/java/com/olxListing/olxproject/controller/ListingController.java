@@ -1,5 +1,6 @@
 package com.olxListing.olxproject.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,19 @@ public class ListingController {
 		return listingService.displayListings();
 	}
 	
+	@GetMapping("/searchUsingCategory/{category}")
+	public List<Listing> searchUsingName(@PathVariable("category") String category) throws Exception{
+		return listingService.searchUsingCategory(category) ;
+	}
+	
 	@GetMapping("/Listings/{id}")
 	public User_Entity displayContactDetails(@PathVariable("id") int id) {
 		return listingService.displayContactDetails(id);
+	}
+	
+	@GetMapping("/searchUsingLocation/{city}")
+	public List<Listing> searchUsingLocation(@PathVariable("city") String city) {
+		return listingService.searchUsingLocation(city);
 	}
 	
 	@PutMapping("/Listings")

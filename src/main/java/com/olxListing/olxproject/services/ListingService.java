@@ -1,5 +1,6 @@
 package com.olxListing.olxproject.services;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,5 +18,9 @@ public interface ListingService {
 	public User_Entity displayContactDetails(int id);
 
 	public Listing updateListing(Listing listing);
+
+	public List<Listing> searchUsingCategory(String category) throws Exception;
+
+	public List<Listing> searchUsingLocation(String city);
 
 }

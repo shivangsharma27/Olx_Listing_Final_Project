@@ -29,6 +29,7 @@ public class User_Entity {
 	private String mail;
 	private String password;
 	private boolean isLoggedIn = false;
+	private boolean isActivate = true;
 	
 	@OneToMany(mappedBy = "userEntity", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Listing> listings;
@@ -104,8 +105,17 @@ public class User_Entity {
 	}
 	
 
+	public boolean isActivate() {
+		return isActivate;
+	}
+
+	public void setActivate(boolean isActivate) {
+		this.isActivate = isActivate;
+	}
+
+
 	public User_Entity(int id, String name, String last_name, int contact_No, String mail, String password,
-			boolean isLoggedIn, List<Listing> listings) {
+			boolean isLoggedIn, boolean isActivate, List<Listing> listings) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -114,14 +124,15 @@ public class User_Entity {
 		this.mail = mail;
 		this.password = password;
 		this.isLoggedIn = isLoggedIn;
+		this.isActivate = isActivate;
 		this.listings = listings;
 	}
 
 	@Override
 	public String toString() {
 		return "User_Entity [id=" + id + ", name=" + name + ", last_name=" + last_name + ", contact_No=" + contact_No
-				+ ", mail=" + mail + ", password=" + password + ", isLoggedIn=" + isLoggedIn + ", listings=" + listings
-				+ "]";
+				+ ", mail=" + mail + ", password=" + password + ", isLoggedIn=" + isLoggedIn + ", isActivate="
+				+ isActivate + ", listings=" + listings + "]";
 	}
 
 

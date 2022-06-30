@@ -1,5 +1,7 @@
 package com.olxListing.olxproject.services;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,32 @@ public class ListingServiceImpl implements ListingService{
 	@Override
 	public Listing updateListing(Listing listing) {
 		return listingRepo.save(listing);
+	}
+
+	@Override
+	public List<Listing> searchUsingCategory(String category) throws Exception {
+		if(listingRepo.findBycategory(category) == null) {
+			throw new Exception("No product available in the given category");
+		}
+		return listingRepo.findBycategory(category);
+	}
+
+	@Override
+	public List<Listing> searchUsingLocation(String city) {
+		List<Listing> resultSet = new ArrayList<>();
+		List<Listing> entrySet = listingRepo.findAll();
+		
+		for(Listing entry : entrySet) {
+			HashMap<String, String> location = entry.getLocation();
+			System.out.println(location);
+			if(location != null && location.get("city") != null) {
+				if(location.get("city").equalsIgnoreCase(city)) {
+					resultSet.add(entry);
+				}
+			}
+				
+		}
+		return resultSet;
 	}
 
 }
