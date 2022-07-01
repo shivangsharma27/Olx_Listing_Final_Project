@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.olxListing.olxproject.entity.Listing;
+import com.olxListing.olxproject.entity.Location;
 import com.olxListing.olxproject.entity.User_Entity;
 import com.olxListing.olxproject.repository.Listing_Repo;
 
@@ -48,20 +49,36 @@ public class ListingServiceImpl implements ListingService{
 
 	@Override
 	public List<Listing> searchUsingLocation(String city) {
-		List<Listing> resultSet = new ArrayList<>();
-		List<Listing> entrySet = listingRepo.findAll();
+//		List<Listing> resultSet = new ArrayList<>();
+//		List<Listing> entrySet = listingRepo.findAll();
+//		
+//		for(Listing entry : entrySet) {
+//			HashMap<String, String> location = entry.getLocation();
+//			System.out.println(location);
+//			if(location != null && location.get("city") != null) {
+//				if(location.get("city").equalsIgnoreCase(city)) {
+//					resultSet.add(entry);
+//				}
+//			}
+//				
+//		}
+//		return resultSet;
+		List<Listing> ListOfAllLocations = listingRepo.findAll();
+		List<Listing> finalLocations = new ArrayList<>();
 		
-		for(Listing entry : entrySet) {
-			HashMap<String, String> location = entry.getLocation();
-			System.out.println(location);
-			if(location != null && location.get("city") != null) {
-				if(location.get("city").equalsIgnoreCase(city)) {
-					resultSet.add(entry);
-				}
-			}
-				
+		for(Listing entry : ListOfAllLocations) {
+			String curr_city = entry.getLocation().getCity();
+			if(curr_city.equalsIgnoreCase(city))
+				finalLocations.add(entry);
 		}
-		return resultSet;
+		
+		return finalLocations;
+	}
+
+	@Override
+	public List<Listing> searchUsingPrice(int price) {
+		
+		return listingRepo.findItemsByPrice(price);
 	}
 
 }

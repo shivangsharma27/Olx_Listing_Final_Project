@@ -13,7 +13,11 @@ import com.olxListing.olxproject.entity.Listing;
 public interface Listing_Repo extends JpaRepository<Listing, Integer>{
 	public List<Listing> findBycategory(String category);
 	
-	@Query("SELECT location FROM Listing listing")
-	public List<HashMap<String, String>> findBylocation();
+//	@Query("SELECT location FROM Listing listing")
+//	public List<HashMap<String, String>> findBylocation();
+	
+	@Query(value = "SELECT * FROM listing l WHERE l.price < ?1", 
+			nativeQuery = true)
+	public List<Listing> findItemsByPrice(int price);
 
 }

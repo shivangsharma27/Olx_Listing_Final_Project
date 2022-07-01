@@ -1,11 +1,12 @@
 package com.olxListing.olxproject.entity;
 
-import java.util.HashMap;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
+
+import javax.persistence.OneToOne;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -25,7 +26,10 @@ public class Listing {
 	String description;
 	String category;
 	
-	HashMap<String, String> location = new HashMap<>();
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	Location location;
+	
 	
 	@ManyToOne
 	User_Entity userEntity;
@@ -34,8 +38,8 @@ public class Listing {
 		super();
 	}
 
-	public Listing(int id, String name, int price, String description, String category,
-			HashMap<String, String> location, User_Entity userEntity) {
+	public Listing(int id, String name, int price, String description, String category, Location location,
+			User_Entity userEntity) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -45,7 +49,6 @@ public class Listing {
 		this.location = location;
 		this.userEntity = userEntity;
 	}
-
 
 	public int getId() {
 		return id;
@@ -79,15 +82,14 @@ public class Listing {
 		this.description = description;
 	}
 	
-	public HashMap<String, String> getLocation() {
+	@JsonBackReference(value = "location-movement")
+	public Location getLocation() {
 		return location;
 	}
 
-
-	public void setLocation(HashMap<String, String> location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
-
 
 	@JsonBackReference
 	public User_Entity getUserEntity() {
