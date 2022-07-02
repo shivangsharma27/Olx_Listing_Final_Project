@@ -7,5 +7,6 @@ import com.olxListing.olxproject.entity.Admin;
 
 @Repository
 public interface Admin_Repo extends JpaRepository<Admin, Integer>{
+	public Admin findByemail(String email);
 
 }

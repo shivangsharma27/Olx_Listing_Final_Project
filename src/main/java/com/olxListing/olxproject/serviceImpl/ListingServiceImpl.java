@@ -1,26 +1,46 @@
-package com.olxListing.olxproject.services;
+package com.olxListing.olxproject.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.olxListing.olxproject.entity.Listing;
 import com.olxListing.olxproject.entity.Location;
 import com.olxListing.olxproject.entity.User_Entity;
 import com.olxListing.olxproject.repository.Listing_Repo;
+import com.olxListing.olxproject.repository.User_Repo;
+import com.olxListing.olxproject.services.ListingService;
 
 @Component
 public class ListingServiceImpl implements ListingService{
 	
 	@Autowired
 	Listing_Repo listingRepo;
-
+	
+	@Autowired
+	User_Repo userRepo;
+	
 	@Override
-	public Listing addListing(Listing listing) {
-		return listingRepo.save(listing);
+	public ResponseEntity<String> addListing(Listing listing) {
+		int id = listing.getUserEntity().getId();
+        User_Entity user = userRepo.getById(id);
+		
+		if(user.isActivate() && user.isLoggedIn()) {
+			 listingRepo.save(listing);
+			 String msg = "Product added successfully";
+			 return new ResponseEntity<String>(msg, HttpStatus.OK);
+		}
+		else {
+			String msg = "Login to add any product...";
+			return new ResponseEntity<String>(msg,HttpStatus.OK);
+		}
+		
 	}
 
 	@Override
@@ -49,20 +69,6 @@ public class ListingServiceImpl implements ListingService{
 
 	@Override
 	public List<Listing> searchUsingLocation(String city) {
-//		List<Listing> resultSet = new ArrayList<>();
-//		List<Listing> entrySet = listingRepo.findAll();
-//		
-//		for(Listing entry : entrySet) {
-//			HashMap<String, String> location = entry.getLocation();
-//			System.out.println(location);
-//			if(location != null && location.get("city") != null) {
-//				if(location.get("city").equalsIgnoreCase(city)) {
-//					resultSet.add(entry);
-//				}
-//			}
-//				
-//		}
-//		return resultSet;
 		List<Listing> ListOfAllLocations = listingRepo.findAll();
 		List<Listing> finalLocations = new ArrayList<>();
 		
@@ -79,6 +85,12 @@ public class ListingServiceImpl implements ListingService{
 	public List<Listing> searchUsingPrice(int price) {
 		
 		return listingRepo.findItemsByPrice(price);
+	}
+
+	@Override
+	public List<Listing> sortListings() {
+		return listingRepo.findAll(Sort.by(Sort.Direction.ASC, "price"));
+		
 	}
 
 }

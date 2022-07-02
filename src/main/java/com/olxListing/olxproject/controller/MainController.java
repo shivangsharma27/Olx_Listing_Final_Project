@@ -40,11 +40,6 @@ public class MainController {
 		return userService.displayUserListing(id);
 	}
 	
-	@PutMapping("/register")
-	public User_Entity updateUserEntity(@RequestBody User_Entity b) {
-		return userService.updateUser(b);
-	}
-	
 	@DeleteMapping("/register/{id}")
 	public String deleteUserEntity(@PathVariable("id") int id) {
 		return userService.deleteUserEntity(id);	

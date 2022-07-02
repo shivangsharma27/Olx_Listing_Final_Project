@@ -1,4 +1,4 @@
-package com.olxListing.olxproject.services;
+package com.olxListing.olxproject.serviceImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.olxListing.olxproject.entity.Listing;
 import com.olxListing.olxproject.entity.User_Entity;
 import com.olxListing.olxproject.repository.User_Repo;
+import com.olxListing.olxproject.services.UserService;
 
 
 

@@ -3,6 +3,7 @@ package com.olxListing.olxproject.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class ListingController {
 	ListingService listingService;
 	
 	@PostMapping("/Listings")
-	public Listing addListing(@RequestBody Listing listing) {
+	public ResponseEntity<String> addListing(@RequestBody Listing listing){
 		
 		return listingService.addListing(listing);
 	}
@@ -50,6 +51,11 @@ public class ListingController {
 	@GetMapping("/searchUsingPrice/{price}")
 	public List<Listing> searchUsingPrice(@PathVariable("price") int price){
 		return listingService.searchUsingPrice(price);
+	}
+	
+	@GetMapping("/sortListings")
+	public List<Listing> sortListings(){
+		return listingService.sortListings();
 	}
 	
 	@PutMapping("/Listings")
