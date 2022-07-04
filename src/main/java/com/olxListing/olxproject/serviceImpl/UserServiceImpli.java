@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.olxListing.olxproject.entity.Listing;
 import com.olxListing.olxproject.entity.User_Entity;
+import com.olxListing.olxproject.repository.Listing_Repo;
 import com.olxListing.olxproject.repository.User_Repo;
 import com.olxListing.olxproject.services.UserService;
 
@@ -15,8 +16,12 @@ import com.olxListing.olxproject.services.UserService;
 
 @Component
 public class UserServiceImpli implements UserService {
+	
 	@Autowired
 	private User_Repo userRepo;
+	
+	@Autowired
+	private Listing_Repo listingRepo;
 	
 	public User_Entity registerUser(User_Entity b) {
 		return userRepo.save(b);
@@ -44,6 +49,19 @@ public class UserServiceImpli implements UserService {
 		User_Entity user = userRepo.findById(id).get();
 		
 		return user.getListings();
+	}
+
+	@Override
+	public String deactivateListing(String email, int id) {
+		User_Entity user = userRepo.findBymail(email);
+		if(user.isActivate() && user.isLoggedIn()) {
+			Listing listing = listingRepo.findById(id).get();
+			listing.setIsactivate(false);
+			listingRepo.save(listing);
+			
+			return "Listing is deactivated successfully!";
+		}
+		return "User is not logged In";
 	}
 		
 

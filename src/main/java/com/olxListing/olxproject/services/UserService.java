@@ -20,5 +20,7 @@ public interface UserService {
 	public String deleteUserEntity(int id);
 	
 	public List<Listing> displayUserListing(int id);
+
+	public String deactivateListing(String email, int id);
 	
 }

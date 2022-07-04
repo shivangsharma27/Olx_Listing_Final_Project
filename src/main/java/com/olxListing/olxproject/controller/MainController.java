@@ -40,6 +40,11 @@ public class MainController {
 		return userService.displayUserListing(id);
 	}
 	
+	@PutMapping("/deactivateListing/{email}/{id}")
+	public String deactivateUser(@PathVariable("email") String email, @PathVariable("id") int id) {
+		return userService.deactivateListing(email, id);
+	}
+	
 	@DeleteMapping("/register/{id}")
 	public String deleteUserEntity(@PathVariable("id") int id) {
 		return userService.deleteUserEntity(id);	

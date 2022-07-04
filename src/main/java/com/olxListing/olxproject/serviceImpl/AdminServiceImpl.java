@@ -1,16 +1,22 @@
 package com.olxListing.olxproject.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.olxListing.olxproject.entity.Admin;
+import com.olxListing.olxproject.entity.Listing;
 import com.olxListing.olxproject.entity.Login;
 import com.olxListing.olxproject.entity.User_Entity;
 import com.olxListing.olxproject.repository.Admin_Repo;
+import com.olxListing.olxproject.repository.Listing_Repo;
 import com.olxListing.olxproject.repository.User_Repo;
 import com.olxListing.olxproject.services.AdminService;
 
@@ -22,6 +28,9 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Autowired
 	Admin_Repo adminRepo;
+	
+	@Autowired
+	Listing_Repo listingRepo;
 
 	@Override
 	public String updateCustomer(String email, User_Entity user) {
@@ -56,15 +65,19 @@ public class AdminServiceImpl implements AdminService{
 			return "User data updated Successfully!";
 		}
 		
-		return "You are not admin";
+		return "You are not an admin";
 		
 	}
 
 	@Override
 	public ResponseEntity<List<User_Entity>> seeCustomers() {
 		Admin admin = adminRepo.findAll().get(0);
-
-		return new ResponseEntity<List<User_Entity>>(userRepo.findAll(), HttpStatus.OK);
+		
+			if(admin.isLoggedIn()) 
+				return new ResponseEntity<List<User_Entity>>(userRepo.findAll(), HttpStatus.OK);
+			else
+				throw new ResponseStatusException(
+				           HttpStatus.OK, "Foo Not Found");
 	}
 
 	@Override
@@ -78,7 +91,7 @@ public class AdminServiceImpl implements AdminService{
 			return "Customer is deactivated successfully!";
 		}
 		
-		return "You are not admin!";
+		return "You are not an admin!";
 	}
 
 	@Override
@@ -123,14 +136,68 @@ public class AdminServiceImpl implements AdminService{
 			return "Customer is activated successfully!";
 		}
 		else {
-			return "You are not admin";
+			return "You are not an admin";
 		}
 	}
 
 	@Override
 	public String logoutAdmin() {
-		adminRepo.findAll().get(0).setLoggedIn(false);
+		Admin admin = adminRepo.findAll().get(0);
+		admin.setLoggedIn(false);
+		adminRepo.save(admin);
 		return "Logged out successfully!";
+	}
+
+	@Override
+	public String removeListing(int id) {
+		Admin admin = adminRepo.findAll().get(0);
+		
+		
+		if(admin.isLoggedIn()) {
+			System.out.println(id);
+			try {
+			listingRepo.deleteById(id);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return "Listing is removed successfully!";
+		}
+		
+		return "You are not an admin";
+	}
+
+	@Override
+	public List<User_Entity> getActiveUsers() {
+		List<User_Entity> activeUsers = new ArrayList<>();
+		
+		List<User_Entity> allUsers = userRepo.findAll();
+		
+		for(User_Entity user : allUsers) {
+			if(user.isActivate())
+				activeUsers.add(user);
+		}
+		return activeUsers;
+	}
+
+	@Override
+	public List<Listing> getListingOfUser(String email) {
+		
+		return userRepo.findBymail(email).getListings();
+	}
+
+	@Override
+	public List<Listing> getExpiredListing() {
+		List<Listing> expiredListing = new ArrayList<>();
+		List<Listing> allListings = listingRepo.findAll();
+		Calendar calendar = Calendar.getInstance();
+		Date curr_date = calendar.getTime();
+		
+		for(Listing listing : allListings) {
+			if(listing.getExpiryDate().before(curr_date)) {
+				expiredListing.add(listing);
+			}
+		}
+		return expiredListing;
 	}
 
 }

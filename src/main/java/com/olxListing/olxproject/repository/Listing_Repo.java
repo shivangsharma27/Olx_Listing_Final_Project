@@ -19,5 +19,6 @@ public interface Listing_Repo extends JpaRepository<Listing, Integer>{
 	@Query(value = "SELECT * FROM listing l WHERE l.price < ?1", 
 			nativeQuery = true)
 	public List<Listing> findItemsByPrice(int price);
+	
 
 }

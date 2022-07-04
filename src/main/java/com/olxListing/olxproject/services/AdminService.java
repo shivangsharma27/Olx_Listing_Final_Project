@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.olxListing.olxproject.entity.Admin;
+import com.olxListing.olxproject.entity.Listing;
 import com.olxListing.olxproject.entity.Login;
 import com.olxListing.olxproject.entity.User_Entity;
 
@@ -27,5 +28,13 @@ public interface AdminService {
 	public String activateUser(String mail);
 
 	public String logoutAdmin();
+
+	public String removeListing(int id);
+
+	public List<User_Entity> getActiveUsers();
+
+	public List<Listing> getListingOfUser(String email);
+
+	public List<Listing> getExpiredListing();
 
 }

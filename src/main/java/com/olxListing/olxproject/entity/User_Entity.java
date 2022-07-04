@@ -31,7 +31,7 @@ public class User_Entity {
 	private boolean isLoggedIn = false;
 	private boolean isActivate = true;
 	
-	@OneToMany(mappedBy = "userEntity", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<Listing> listings;
 	
 	public User_Entity() {
