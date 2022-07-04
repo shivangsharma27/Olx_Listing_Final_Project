@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.olxListing.olxproject.entity.Bookmark;
 import com.olxListing.olxproject.entity.Listing;
 import com.olxListing.olxproject.entity.User_Entity;
 
@@ -22,5 +23,7 @@ public interface UserService {
 	public List<Listing> displayUserListing(int id);
 
 	public String deactivateListing(String email, int id);
+
+	public String addBookmark(Bookmark bookmark);
 	
 }

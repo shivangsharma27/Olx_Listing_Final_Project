@@ -34,6 +34,9 @@ public class User_Entity {
 	@OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<Listing> listings;
 	
+	@OneToMany(mappedBy = "userId", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+	private List<Bookmark> bookmarks;
+	
 	public User_Entity() {
 		super();
 	}

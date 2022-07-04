@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.olxListing.olxproject.entity.Bookmark;
 import com.olxListing.olxproject.entity.Listing;
 import com.olxListing.olxproject.entity.User_Entity;
 import com.olxListing.olxproject.services.UserService;
@@ -29,6 +30,11 @@ public class MainController {
 		
 	}
 	
+	@PostMapping("/bookmarkListing")
+	public String addBookmark(@RequestBody Bookmark bookmark) {
+		return userService.addBookmark(bookmark);
+	}
+	
 	@GetMapping("/register")
 	public List<User_Entity> display()
 	{
@@ -39,6 +45,7 @@ public class MainController {
 	public List<Listing> displayUserListings(@PathVariable("id") int id){
 		return userService.displayUserListing(id);
 	}
+
 	
 	@PutMapping("/deactivateListing/{email}/{id}")
 	public String deactivateUser(@PathVariable("email") String email, @PathVariable("id") int id) {

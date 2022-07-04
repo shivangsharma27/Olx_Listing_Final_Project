@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.olxListing.olxproject.entity.Bookmark;
 import com.olxListing.olxproject.entity.Listing;
 import com.olxListing.olxproject.entity.User_Entity;
+import com.olxListing.olxproject.repository.Bookmark_Repo;
 import com.olxListing.olxproject.repository.Listing_Repo;
 import com.olxListing.olxproject.repository.User_Repo;
 import com.olxListing.olxproject.services.UserService;
@@ -22,6 +24,8 @@ public class UserServiceImpli implements UserService {
 	
 	@Autowired
 	private Listing_Repo listingRepo;
+	
+	@Autowired Bookmark_Repo bookmarkRepo;
 	
 	public User_Entity registerUser(User_Entity b) {
 		return userRepo.save(b);
@@ -62,6 +66,20 @@ public class UserServiceImpli implements UserService {
 			return "Listing is deactivated successfully!";
 		}
 		return "User is not logged In";
+	}
+
+	@Override
+	public String addBookmark(Bookmark bookmark) {
+		
+		int user_id = bookmark.getUserId().getId();
+		User_Entity user = userRepo.findById(user_id).get();
+		
+		if(user.isActivate() && user.isLoggedIn()) {
+			bookmarkRepo.save(bookmark);
+			return "Bookmark is added successfully!";
+		}
+		return "User is not logged In";
+		
 	}
 		
 
