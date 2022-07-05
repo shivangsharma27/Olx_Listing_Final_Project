@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,17 +22,19 @@ import com.olxListing.olxproject.entity.User_Entity;
 import com.olxListing.olxproject.services.UserService;
 
 @RestController
+
 @RequestMapping("/customer")
 public class MainController {
 	@Autowired
 	private UserService userService;
 	
 	@PostMapping("/register")
-	public String userRegisterd(@Valid @RequestBody User_Entity b )
+	public String userRegisterd(@RequestBody User_Entity b )
 	{
 		return userService.registerUser(b);
 		
 	}
+
 	
 	@PostMapping("/bookmarkListing")
 	public String addBookmark(@RequestBody Bookmark bookmark) {
@@ -39,7 +42,7 @@ public class MainController {
 	}
 	
 	@GetMapping("/displayAll")
-	public List<User_Entity> display()
+	public ResponseEntity<?> display()
 	{
 		return userService.display();
 	}

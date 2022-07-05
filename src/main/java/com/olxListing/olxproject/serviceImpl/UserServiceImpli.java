@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -43,10 +44,14 @@ public class UserServiceImpli implements UserService {
 		
 	}
 	
-	public List<User_Entity> display()
+	public ResponseEntity<?> display()
 	{
-		List<User_Entity> list=(List<User_Entity> )userRepo.findAll();
-		return list;
+        try {
+        	return ResponseEntity.ok(userRepo.findAll());
+        }
+        catch(Exception e){
+        	return ResponseEntity.badRequest().body("No customer..");
+        }
 	}
 
 	@Override

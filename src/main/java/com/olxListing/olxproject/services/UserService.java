@@ -15,7 +15,7 @@ import com.olxListing.olxproject.entity.User_Entity;
 public interface UserService {
 	public String registerUser(User_Entity b);
 
-	public List<User_Entity> display();
+	public ResponseEntity<?> display();
 
 	public User_Entity updateUser(User_Entity b);
 	

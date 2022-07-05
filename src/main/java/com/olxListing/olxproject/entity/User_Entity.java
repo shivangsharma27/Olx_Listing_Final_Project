@@ -11,11 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-
-
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "User_Register", uniqueConstraints = {
@@ -26,10 +25,13 @@ public class User_Entity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	@NotBlank
 	private String name;
 	private String last_name;
 	private int contact_No;
+	@NotBlank
 	private String mail;
+	@NotBlank
 	private String password;
 	private boolean isLoggedIn = false;
 	private boolean isActivate = true;
@@ -84,7 +86,7 @@ public class User_Entity {
 		this.mail = mail;
 	}
 	
-	@JsonManagedReference
+
 	@JsonBackReference
 	public List<Listing> getListings() {
 		return listings;
