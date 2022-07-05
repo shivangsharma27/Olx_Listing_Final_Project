@@ -2,14 +2,17 @@ package com.olxListing.olxproject.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.olxListing.olxproject.entity.Bookmark;
@@ -18,13 +21,13 @@ import com.olxListing.olxproject.entity.User_Entity;
 import com.olxListing.olxproject.services.UserService;
 
 @RestController
-
+@RequestMapping("/customer")
 public class MainController {
 	@Autowired
 	private UserService userService;
 	
 	@PostMapping("/register")
-	public User_Entity userRegisterd(@RequestBody User_Entity b )
+	public String userRegisterd(@Valid @RequestBody User_Entity b )
 	{
 		return userService.registerUser(b);
 		
@@ -35,7 +38,7 @@ public class MainController {
 		return userService.addBookmark(bookmark);
 	}
 	
-	@GetMapping("/register")
+	@GetMapping("/displayAll")
 	public List<User_Entity> display()
 	{
 		return userService.display();

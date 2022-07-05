@@ -37,7 +37,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/seeAll")
-	public List<Admin> getAllAdmin(){
+	public ResponseEntity<?> getAllAdmin(){
 		return adminService.getAllAdmin();
 	}
 	

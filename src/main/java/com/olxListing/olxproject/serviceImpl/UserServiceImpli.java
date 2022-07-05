@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.olxListing.olxproject.entity.Bookmark;
 import com.olxListing.olxproject.entity.Listing;
@@ -27,8 +29,18 @@ public class UserServiceImpli implements UserService {
 	
 	@Autowired Bookmark_Repo bookmarkRepo;
 	
-	public User_Entity registerUser(User_Entity b) {
-		return userRepo.save(b);
+	public String registerUser(User_Entity b) {
+		try {
+			
+				userRepo.save(b);
+				return "Registration Successful";
+           
+			
+		}catch(Exception e) {
+			return "Enter details correctly";
+		}
+		 
+		
 	}
 	
 	public List<User_Entity> display()

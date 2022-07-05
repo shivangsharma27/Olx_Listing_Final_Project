@@ -23,7 +23,7 @@ public interface AdminService {
 
 	public String loginAdmin(Login login);
 
-	public List<Admin> getAllAdmin();
+	public ResponseEntity<?> getAllAdmin();
 
 	public String activateUser(String mail);
 

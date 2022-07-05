@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.olxListing.olxproject.entity.Listing;
@@ -16,18 +17,19 @@ import com.olxListing.olxproject.entity.User_Entity;
 import com.olxListing.olxproject.services.ListingService;
 
 @RestController
+@RequestMapping("/listing")
 public class ListingController {
 	
 	@Autowired
 	ListingService listingService;
 	
-	@PostMapping("/Listings")
+	@PostMapping("/add")
 	public ResponseEntity<String> addListing(@RequestBody Listing listing){
 		
 		return listingService.addListing(listing);
 	}
 	
-	@GetMapping("/Listings")
+	@GetMapping("/display")
 	public List<Listing> displayListings(){
 		
 		return listingService.displayListings();
@@ -58,7 +60,7 @@ public class ListingController {
 		return listingService.sortListings();
 	}
 	
-	@PutMapping("/Listings")
+	@PutMapping("/update")
 	public Listing updateListing(@RequestBody Listing listing) {
 		
 		return listingService.updateListing(listing);

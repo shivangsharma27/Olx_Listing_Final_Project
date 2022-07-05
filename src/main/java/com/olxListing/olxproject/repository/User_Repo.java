@@ -10,4 +10,6 @@ public interface User_Repo extends JpaRepository<User_Entity,Integer>{
 	
 	public User_Entity findBymail(String mail);
 
+	public Object findByUsername(String username);
+
 }

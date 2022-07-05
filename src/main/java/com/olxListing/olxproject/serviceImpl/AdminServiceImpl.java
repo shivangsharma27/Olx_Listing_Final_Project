@@ -121,8 +121,16 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public List<Admin> getAllAdmin() {
-		return adminRepo.findAll();
+	public ResponseEntity<?> getAllAdmin() {
+		if(adminRepo.findAll()!=null) {
+			return ResponseEntity.ok(adminRepo.findAll());
+		}
+		else
+			return ResponseEntity
+					.badRequest()
+					.body("No admins available");
+		
+		
 	}
 
 	@Override

@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -82,6 +85,7 @@ public class User_Entity {
 	}
 	
 	@JsonManagedReference
+	@JsonBackReference
 	public List<Listing> getListings() {
 		return listings;
 	}
