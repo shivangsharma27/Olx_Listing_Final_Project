@@ -33,8 +33,8 @@ public class MessagesServiceImpl implements MessagesService{
 
 	@Override
 	public String addMessages(CustomerMessages cm) {
-		User_Entity user1 = userRepo.findBymail(cm.getEmail1());
-		User_Entity user2 = userRepo.findBymail(cm.getEmail2());
+		User_Entity user1 = userRepo.findBymail(cm.getsenderEmail());
+		User_Entity user2 = userRepo.findBymail(cm.getreceiverMail());
 		
 		cm.setUser1(user1);
 		cm.setUser2(user2);
@@ -45,8 +45,8 @@ public class MessagesServiceImpl implements MessagesService{
 
 	@Override
 	public String addAdminMessages(AdminMessages am) {
-		Admin admin = adminRepo.findByemail(am.getEmail1());
-		User_Entity user = userRepo.findBymail(am.getEmail2());
+		Admin admin = adminRepo.findByemail(am.getadminMail());
+		User_Entity user = userRepo.findBymail(am.getcustMail());
 		
 		am.setAdmin(admin);
 		am.setUser(user);
@@ -61,7 +61,7 @@ public class MessagesServiceImpl implements MessagesService{
 		List<CustomerMessages> customerMessages = new ArrayList<>();
 		
 		for(CustomerMessages cm : allMessages) {
-			if(cm.getEmail1().equals(email) || cm.getEmail2().equals(email)) {
+			if(cm.getsenderEmail().equals(email) || cm.getreceiverMail().equals(email)) {
 				customerMessages.add(cm);
 			}
 		}
@@ -74,7 +74,7 @@ public class MessagesServiceImpl implements MessagesService{
 		List<AdminMessages> adminMessages = new ArrayList<>();
 		
 		for(AdminMessages am : allMessages) {
-			if(am.getEmail1().equals(email) || am.getEmail2().equals(email)) {
+			if(am.getadminMail().equals(email) || am.getcustMail().equals(email)) {
 				adminMessages.add(am);
 			}
 		}

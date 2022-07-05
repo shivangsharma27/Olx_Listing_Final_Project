@@ -36,27 +36,27 @@ public class ListingController {
 	}
 	
 	@GetMapping("/searchUsingCategory/{category}")
-	public List<Listing> searchUsingName(@PathVariable("category") String category) throws Exception{
+	public ResponseEntity<List<Listing>> searchUsingName(@PathVariable("category") String category){
 		return listingService.searchUsingCategory(category) ;
 	}
 	
-	@GetMapping("/Listings/{id}")
+	@GetMapping("/contactDetails/{id}")
 	public User_Entity displayContactDetails(@PathVariable("id") int id) {
 		return listingService.displayContactDetails(id);
 	}
 	
 	@GetMapping("/searchUsingLocation/{city}")
-	public List<Listing> searchUsingLocation(@PathVariable("city") String city) {
+	public ResponseEntity<List<Listing>> searchUsingLocation(@PathVariable("city") String city) {
 		return listingService.searchUsingLocation(city);
 	}
 	
 	@GetMapping("/searchUsingPrice/{price}")
-	public List<Listing> searchUsingPrice(@PathVariable("price") int price){
+	public ResponseEntity<List<Listing>> searchUsingPrice(@PathVariable("price") int price){
 		return listingService.searchUsingPrice(price);
 	}
 	
 	@GetMapping("/sortListings")
-	public List<Listing> sortListings(){
+	public ResponseEntity<List<Listing>> sortListings(){
 		return listingService.sortListings();
 	}
 	

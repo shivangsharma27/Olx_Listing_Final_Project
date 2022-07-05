@@ -17,12 +17,12 @@ public class LocationController {
 	@Autowired Location_Repo locationRepo;
 	
 	
-	@GetMapping("/location")
+	@GetMapping("/seelocation")
 	public List<Location> getLocation() {
 		return locationRepo.findAll();
 	}
 	
-	@PostMapping("/location")
+	@PostMapping("/postLocations")
 	public void addLocation(@RequestBody Location location) {
 		locationRepo.save(location);
 	}

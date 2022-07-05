@@ -19,12 +19,12 @@ public interface ListingService {
 
 	public Listing updateListing(Listing listing);
 
-	public List<Listing> searchUsingCategory(String category) throws Exception;
+	public ResponseEntity<List<Listing>> searchUsingCategory(String category);
 
-	public List<Listing> searchUsingLocation(String city);
+	public ResponseEntity<List<Listing>> searchUsingLocation(String city);
 
-	public List<Listing> searchUsingPrice(int price);
+	public ResponseEntity<List<Listing>> searchUsingPrice(int price);
 
-	public List<Listing> sortListings();
+	public ResponseEntity<List<Listing>> sortListings();
 
 }

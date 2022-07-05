@@ -26,8 +26,13 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 	
+	@PostMapping("/register")
+	public String registerAdmin(@RequestBody Admin admin) {
+		return adminService.registerAdmin(admin);
+	}
+	
 	@GetMapping("/seeCustomer")
-	public ResponseEntity<List<User_Entity>> seeCustomers(){
+	public ResponseEntity<?> seeCustomers(){
 		return adminService.seeCustomers();
 	}
 	
@@ -42,12 +47,12 @@ public class AdminController {
 	}
 	
 	@GetMapping("/seeActiveUsers")
-	public List<User_Entity> getActiveUsers(){
+	public ResponseEntity<?> getActiveUsers(){
 		return adminService.getActiveUsers();
 	}
 	
 	@GetMapping("/getListingOfUser/{email}")
-	public List<Listing> getListingOfUser(@PathVariable("email") String email){
+	public ResponseEntity<?> getListingOfUser(@PathVariable("email") String email){
 		return adminService.getListingOfUser(email);
 	}
 	
@@ -57,7 +62,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/seeExpiredListing")
-	public List<Listing> getExpiredListing(){
+	public ResponseEntity<?> getExpiredListing(){
 		return adminService.getExpiredListing();
 	}
 	
@@ -67,19 +72,16 @@ public class AdminController {
 	}
 	
 	@PutMapping("/deactivateCustomer/{mail}")
-	public String deactivateUser(@PathVariable("mail") String mail) {
+	public ResponseEntity<String> deactivateUser(@PathVariable("mail") String mail) {
 		return adminService.deactivateUser(mail);
 	}
 	
 	@PutMapping("/activateCustomer/{mail}")
-	public String activateUser(@PathVariable("mail") String mail) {
+	public ResponseEntity<String> activateUser(@PathVariable("mail") String mail) {
 		return adminService.activateUser(mail);
 	}
 	
-	@PostMapping("/register")
-	public String registerAdmin(@RequestBody Admin admin) {
-		return adminService.registerAdmin(admin);
-	}
+	
 	
 	@DeleteMapping("/removeListing/{id}")
 	public String removeListing(@PathVariable("id") int id) {

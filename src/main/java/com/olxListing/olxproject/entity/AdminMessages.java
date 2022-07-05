@@ -23,9 +23,9 @@ public class AdminMessages {
 	@OneToOne
 	User_Entity user;
 	
-	String email1;
+	String adminMail;
 	
-	String email2;
+	String custMail;
 	
 	String message;
 	
@@ -38,13 +38,13 @@ public class AdminMessages {
 	
 	
 
-	public AdminMessages(int id, Admin admin, User_Entity user, String email1, String email2, String message) {
+	public AdminMessages(int id, Admin admin, User_Entity user, String adminMail, String custMail, String message) {
 		super();
 		this.id = id;
 		this.admin = admin;
 		this.user = user;
-		this.email1 = email1;
-		this.email2 = email2;
+		this.adminMail = adminMail;
+		this.custMail = custMail;
 		this.message = message;
 	}
 
@@ -76,20 +76,20 @@ public class AdminMessages {
 		this.user = user;
 	}
 
-	public String getEmail1() {
-		return email1;
+	public String getadminMail() {
+		return adminMail;
 	}
 
-	public void setEmail1(String email1) {
-		this.email1 = email1;
+	public void setadminMail(String adminMail) {
+		this.adminMail = adminMail;
 	}
 
-	public String getEmail2() {
-		return email2;
+	public String getcustMail() {
+		return custMail;
 	}
 
-	public void setEmail2(String email2) {
-		this.email2 = email2;
+	public void setcustMail(String custMail) {
+		this.custMail = custMail;
 	}
 
 	public String getMessage() {

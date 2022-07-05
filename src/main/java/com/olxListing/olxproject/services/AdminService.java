@@ -15,9 +15,9 @@ public interface AdminService {
 
 	public String updateCustomer(String email, User_Entity user);
 
-	public ResponseEntity<List<User_Entity>> seeCustomers();
+	public ResponseEntity<?> seeCustomers();
 
-	public String deactivateUser(String email);
+	public ResponseEntity<String> deactivateUser(String email);
 
 	public String registerAdmin(Admin admin);
 
@@ -25,16 +25,16 @@ public interface AdminService {
 
 	public ResponseEntity<?> getAllAdmin();
 
-	public String activateUser(String mail);
+	public ResponseEntity<String> activateUser(String mail);
 
 	public String logoutAdmin();
 
 	public String removeListing(int id);
 
-	public List<User_Entity> getActiveUsers();
+	public ResponseEntity<?> getActiveUsers();
 
-	public List<Listing> getListingOfUser(String email);
+	public ResponseEntity<?> getListingOfUser(String email);
 
-	public List<Listing> getExpiredListing();
+	public ResponseEntity<?> getExpiredListing();
 
 }

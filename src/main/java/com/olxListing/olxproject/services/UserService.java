@@ -25,6 +25,6 @@ public interface UserService {
 
 	public String deactivateListing(String email, int id);
 
-	public String addBookmark(Bookmark bookmark);
+	public ResponseEntity<String> addBookmark(Bookmark bookmark);
 	
 }

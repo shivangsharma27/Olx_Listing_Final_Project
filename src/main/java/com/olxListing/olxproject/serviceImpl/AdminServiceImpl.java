@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.olxListing.olxproject.entity.Admin;
@@ -34,68 +35,89 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public String updateCustomer(String email, User_Entity user) {
-		
-		Admin admin = adminRepo.findAll().get(0);
-		
-		if(admin.isLoggedIn()) {
-			User_Entity curr_user = userRepo.findBymail(email);
+		try {
+			Admin admin = adminRepo.findAll().get(0);
 			
-			if(curr_user == null) {
-				return "Please enter a valid mail";
+			if(admin.isLoggedIn()) {
+				User_Entity curr_user = userRepo.findBymail(email);
+				
+				if(curr_user == null) {
+					return "Please enter a valid mail";
+				}
+				
+				if(user.getName() != null)
+					curr_user.setName(user.getName());
+				
+				if(user.getLast_name() != null)
+					curr_user.setLast_name(user.getLast_name());
+				
+				if(user.getContact_No() != 0)
+					curr_user.setContact_No(user.getContact_No());
+				
+				if(user.getMail() != null)
+					curr_user.setMail(user.getMail());
+				
+				if(user.getPassword() != null)
+					curr_user.setPassword(user.getPassword());
+				
+				
+				userRepo.save(curr_user);
+				
+				return "User data updated Successfully!";
 			}
 			
-			if(user.getName() != null)
-				curr_user.setName(user.getName());
+			return "You are not an admin";
 			
-			if(user.getLast_name() != null)
-				curr_user.setLast_name(user.getLast_name());
-			
-			if(user.getContact_No() != 0)
-				curr_user.setContact_No(user.getContact_No());
-			
-			if(user.getMail() != null)
-				curr_user.setMail(user.getMail());
-			
-			if(user.getPassword() != null)
-				curr_user.setPassword(user.getPassword());
-			
-			
-			userRepo.save(curr_user);
-			
-			return "User data updated Successfully!";
 		}
 		
-		return "You are not an admin";
+		catch(Exception e) {
+			return "Please enter an email";
+		}
+		}
 		
-	}
 
 	@Override
-	public ResponseEntity<List<User_Entity>> seeCustomers() {
+	public ResponseEntity<?> seeCustomers() {
 		Admin admin = adminRepo.findAll().get(0);
-		
+		try {
 			if(admin.isLoggedIn()) 
 				return new ResponseEntity<List<User_Entity>>(userRepo.findAll(), HttpStatus.OK);
-			else
-				throw new ResponseStatusException(
-				           HttpStatus.OK, "Foo Not Found");
+			return new ResponseEntity<String>("Admin not logged in ",HttpStatus.BAD_REQUEST);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<String>("No cutomers available",HttpStatus.BAD_REQUEST);
+		}
+		
+			
 	}
 
 	@Override
-	public String deactivateUser(String email) {
+	public ResponseEntity<String> deactivateUser(String email) {
 		Admin admin = adminRepo.findAll().get(0);
-		if(admin.isLoggedIn()) {
-			User_Entity user = userRepo.findBymail(email);
-			user.setActivate(false);
-			userRepo.save(user);
+		try {
+			if(admin.isLoggedIn()) {
+				User_Entity user = userRepo.findBymail(email);
+				user.setActivate(false);
+				userRepo.save(user);
+				
+				return new ResponseEntity<String>("Customer is deactivated successfully!",HttpStatus.OK);
+			}
 			
-			return "Customer is deactivated successfully!";
+			return new ResponseEntity<String>("You are not an admin!",HttpStatus.BAD_REQUEST);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("email is invalid",HttpStatus.BAD_REQUEST);
 		}
 		
-		return "You are not an admin!";
 	}
 
 	@Override
 	public String registerAdmin(Admin admin) {
+		if(admin.getEmail()==null ){
+			return "Please enter mail";
+		}
+		else if(admin.getPassword()==null) {
+			return "Please enter your password";
+		}
 		adminRepo.save(admin);
 		return "Admin is registered Successfully!";
 	}
@@ -122,29 +144,30 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public ResponseEntity<?> getAllAdmin() {
-		if(adminRepo.findAll()!=null) {
-			return ResponseEntity.ok(adminRepo.findAll());
+		if(!adminRepo.findAll().isEmpty()) {
+			return new ResponseEntity<List<Admin>>(adminRepo.findAll(),HttpStatus.OK);
 		}
 		else
-			return ResponseEntity
-					.badRequest()
-					.body("No admins available");
+			return new ResponseEntity<String>("No Admins available..",HttpStatus.BAD_REQUEST);
 		
 		
 	}
 
 	@Override
-	public String activateUser(String mail) {
+	public ResponseEntity<String> activateUser(String mail) {
 		Admin admin = adminRepo.findAll().get(0);
-		if(admin.isLoggedIn()) {
-			User_Entity user = userRepo.findBymail(mail);
-			user.setActivate(true);
-			userRepo.save(user);
+		try {
+			if(admin.isLoggedIn()) {
+				User_Entity user = userRepo.findBymail(mail);
+				user.setActivate(true);
+				userRepo.save(user);
+				
+				return new ResponseEntity<String>("Customer is activated successfully!",HttpStatus.OK);
+			}
 			
-			return "Customer is activated successfully!";
-		}
-		else {
-			return "You are not an admin";
+			return new ResponseEntity<String>("You are not an admin!",HttpStatus.BAD_REQUEST);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("email is invalid",HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -162,7 +185,6 @@ public class AdminServiceImpl implements AdminService{
 		
 		
 		if(admin.isLoggedIn()) {
-			System.out.println(id);
 			try {
 			listingRepo.deleteById(id);
 			}catch(Exception e) {
@@ -175,37 +197,76 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public List<User_Entity> getActiveUsers() {
-		List<User_Entity> activeUsers = new ArrayList<>();
-		
-		List<User_Entity> allUsers = userRepo.findAll();
-		
-		for(User_Entity user : allUsers) {
-			if(user.isActivate())
-				activeUsers.add(user);
-		}
-		return activeUsers;
-	}
-
-	@Override
-	public List<Listing> getListingOfUser(String email) {
-		
-		return userRepo.findBymail(email).getListings();
-	}
-
-	@Override
-	public List<Listing> getExpiredListing() {
-		List<Listing> expiredListing = new ArrayList<>();
-		List<Listing> allListings = listingRepo.findAll();
-		Calendar calendar = Calendar.getInstance();
-		Date curr_date = calendar.getTime();
-		
-		for(Listing listing : allListings) {
-			if(listing.getExpiryDate().before(curr_date)) {
-				expiredListing.add(listing);
+	public ResponseEntity<?> getActiveUsers() {
+         Admin admin = adminRepo.findAll().get(0);
+		try {
+			if(admin.isLoggedIn()) {
+				List<User_Entity> activeUsers = new ArrayList<>();
+				List<User_Entity> allUsers = userRepo.findAll();
+				
+				for(User_Entity user : allUsers) {
+					if(user.isActivate())
+						activeUsers.add(user);
+				}
+				if(!activeUsers.isEmpty())
+					return new ResponseEntity<List<User_Entity>> (activeUsers,HttpStatus.OK);
+				else 
+					return new ResponseEntity<String>("No active users",HttpStatus.BAD_REQUEST); 
 			}
+			return new ResponseEntity<String>("Admin is not logged in",HttpStatus.BAD_REQUEST);
 		}
-		return expiredListing;
+		catch(Exception e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		
+		
+	}
+
+	@Override
+	public ResponseEntity<?> getListingOfUser(String email) {
+		try {
+			 Admin admin = adminRepo.findAll().get(0);
+			 if(admin.isLoggedIn()) {
+				 if(!userRepo.findBymail(email).getListings().isEmpty())
+					 return new ResponseEntity<List<Listing>> (userRepo.findBymail(email).getListings(),HttpStatus.OK);
+				 return new ResponseEntity<String>("No listings for the user...",HttpStatus.OK);
+			 }
+			 return new ResponseEntity<String>("Admin is not logged in...",HttpStatus.BAD_REQUEST);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<String>("Invalid email",HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+
+	@Override
+	public ResponseEntity<?> getExpiredListing() {
+		try {
+			Admin admin = adminRepo.findAll().get(0);
+			 if(admin.isLoggedIn()) {
+					 List<Listing> expiredListing = new ArrayList<>();
+						List<Listing> allListings = listingRepo.findAll();
+						Calendar calendar = Calendar.getInstance();
+						Date curr_date = calendar.getTime();
+						
+						for(Listing listing : allListings) {
+							if(listing.getExpiryDate().before(curr_date)) {
+								expiredListing.add(listing);
+							}
+						}
+					if(!expiredListing.isEmpty()) {
+						return new ResponseEntity<List<Listing>>(expiredListing,HttpStatus.OK);
+					}
+					return new ResponseEntity<String>("No list available...",HttpStatus.BAD_REQUEST);
+			 }
+			return new ResponseEntity<String>("Admin is not logged in...",HttpStatus.BAD_REQUEST);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 
 }

@@ -86,16 +86,21 @@ public class UserServiceImpli implements UserService {
 	}
 
 	@Override
-	public String addBookmark(Bookmark bookmark) {
-		
-		int user_id = bookmark.getUserId().getId();
-		User_Entity user = userRepo.findById(user_id).get();
-		
-		if(user.isActivate() && user.isLoggedIn()) {
-			bookmarkRepo.save(bookmark);
-			return "Bookmark is added successfully!";
+	public ResponseEntity<String> addBookmark(Bookmark bookmark) {
+		try {
+			int user_id = bookmark.getUserId().getId();
+			User_Entity user = userRepo.findById(user_id).get();
+			
+			if(user.isActivate() && user.isLoggedIn()) {
+				bookmarkRepo.save(bookmark);
+				return new ResponseEntity<String>("Bookmark is added successfully!",HttpStatus.OK);
+			}
+			return new ResponseEntity<String>("User is not logged In",HttpStatus.BAD_REQUEST);
 		}
-		return "User is not logged In";
+		catch(Exception e) {
+			return new ResponseEntity<String>("Invalid details", HttpStatus.BAD_REQUEST);
+		}
+		
 		
 	}
 		

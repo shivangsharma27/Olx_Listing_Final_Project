@@ -37,7 +37,7 @@ public class MainController {
 
 	
 	@PostMapping("/bookmarkListing")
-	public String addBookmark(@RequestBody Bookmark bookmark) {
+	public ResponseEntity<String> addBookmark(@RequestBody Bookmark bookmark) {
 		return userService.addBookmark(bookmark);
 	}
 	
@@ -47,7 +47,7 @@ public class MainController {
 		return userService.display();
 	}
 	
-	@GetMapping("/register/{id}")
+	@GetMapping("/displayListings/{id}")
 	public List<Listing> displayUserListings(@PathVariable("id") int id){
 		return userService.displayUserListing(id);
 	}

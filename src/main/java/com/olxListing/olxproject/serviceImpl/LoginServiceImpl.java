@@ -36,10 +36,17 @@ public class LoginServiceImpl implements LoginService{
 
 	@Override
 	public String logoutUser(String email) {
-		User_Entity user = userRepo.findBymail(email);
-		user.setLoggedIn(false);
-		userRepo.save(user);
-		return "Logged out successfully!";
+		try {
+			User_Entity user = userRepo.findBymail(email);
+			user.setLoggedIn(false);
+			userRepo.save(user);
+			return "Logged out successfully!";
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "enter mail";
+		}
+		
 	}
 
 }

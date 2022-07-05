@@ -23,9 +23,9 @@ public class CustomerMessages {
 	@OneToOne
 	User_Entity user2;
 	
-	String email1;
+	String senderEmail;
 	
-	String email2;
+	String receiverMail;
 	
 	String message;
 
@@ -35,14 +35,14 @@ public class CustomerMessages {
 	}
 
 
-	public CustomerMessages(int id, User_Entity user1, User_Entity user2, String email1, String email2,
+	public CustomerMessages(int id, User_Entity user1, User_Entity user2, String senderEmail, String receiverMail,
 			String message) {
 		super();
 		this.id = id;
 		this.user1 = user1;
 		this.user2 = user2;
-		this.email1 = email1;
-		this.email2 = email2;
+		this.senderEmail = senderEmail;
+		this.receiverMail = receiverMail;
 		this.message = message;
 	}
 
@@ -77,23 +77,23 @@ public class CustomerMessages {
 	}
 
 
-	public String getEmail1() {
-		return email1;
+	public String getsenderEmail() {
+		return senderEmail;
 	}
 
 
-	public void setEmail1(String email1) {
-		this.email1 = email1;
+	public void setsenderEmail(String senderEmail) {
+		this.senderEmail = senderEmail;
 	}
 
 
-	public String getEmail2() {
-		return email2;
+	public String getreceiverMail() {
+		return receiverMail;
 	}
 
 
-	public void setEmail2(String email2) {
-		this.email2 = email2;
+	public void setreceiverMail(String receiverMail) {
+		this.receiverMail = receiverMail;
 	}
 
 

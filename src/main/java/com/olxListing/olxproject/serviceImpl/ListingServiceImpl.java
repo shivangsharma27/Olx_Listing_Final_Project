@@ -60,36 +60,47 @@ public class ListingServiceImpl implements ListingService{
 	}
 
 	@Override
-	public List<Listing> searchUsingCategory(String category) throws Exception {
-		if(listingRepo.findBycategory(category) == null) {
-			throw new Exception("No product available in the given category");
-		}
-		return listingRepo.findBycategory(category);
+	public ResponseEntity<List<Listing>> searchUsingCategory(String category)  {
+		if(!listingRepo.findBycategory(category).isEmpty())
+			return new ResponseEntity<List<Listing>>(listingRepo.findBycategory(category),HttpStatus.OK);
+		else
+			return new ResponseEntity<List<Listing>>(HttpStatus.BAD_REQUEST);
 	}
 
 	@Override
-	public List<Listing> searchUsingLocation(String city) {
+	public ResponseEntity<List<Listing>> searchUsingLocation(String city) {
 		List<Listing> ListOfAllLocations = listingRepo.findAll();
 		List<Listing> finalLocations = new ArrayList<>();
 		
 		for(Listing entry : ListOfAllLocations) {
 			String curr_city = entry.getLocation().getCity();
+			
 			if(curr_city.equalsIgnoreCase(city))
 				finalLocations.add(entry);
 		}
 		
-		return finalLocations;
-	}
-
-	@Override
-	public List<Listing> searchUsingPrice(int price) {
+		if(!finalLocations.isEmpty()) {
+			return new ResponseEntity<List<Listing>>(finalLocations,HttpStatus.OK);
+		}
+		else
+			return new ResponseEntity<List<Listing>>(HttpStatus.BAD_REQUEST);
 		
-		return listingRepo.findItemsByPrice(price);
 	}
 
 	@Override
-	public List<Listing> sortListings() {
-		return listingRepo.findAll(Sort.by(Sort.Direction.ASC, "price"));
+	public ResponseEntity<List<Listing>> searchUsingPrice(int price) {
+		if(!listingRepo.findItemsByPrice(price).isEmpty())
+			return new ResponseEntity<List<Listing>>(listingRepo.findItemsByPrice(price),HttpStatus.OK);
+		else
+			return new ResponseEntity<List<Listing>>(HttpStatus.BAD_REQUEST);
+	}
+
+	@Override
+	public ResponseEntity<List<Listing>> sortListings() {
+		if(!listingRepo.findAll(Sort.by(Sort.Direction.ASC, "price")).isEmpty())
+			return new ResponseEntity<List<Listing>>(listingRepo.findAll(Sort.by(Sort.Direction.ASC, "price")),HttpStatus.OK);
+		else
+			return new ResponseEntity<List<Listing>>(HttpStatus.BAD_REQUEST);
 		
 	}
 

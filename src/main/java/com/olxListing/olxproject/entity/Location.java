@@ -3,6 +3,7 @@ package com.olxListing.olxproject.entity;
 import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -25,7 +27,7 @@ public class Location {
 	String state;
 	int pincode;
 	
-	@OneToOne(mappedBy = "location", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "location", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private Listing listing;
 	
 	public Location() {
@@ -94,7 +96,7 @@ public class Location {
 		this.pincode = pincode;
 	}
 
-	@JsonManagedReference(value = "location-movement")
+	@JsonBackReference
 	public Listing getListing() {
 		return listing;
 	}
