@@ -13,7 +13,7 @@ import com.olxListing.olxproject.entity.User_Entity;
 @Service
 public interface AdminService {
 
-	public String updateCustomer(String email, User_Entity user);
+	public ResponseEntity<String> updateCustomer(String email, User_Entity user);
 
 	public ResponseEntity<?> seeCustomers();
 

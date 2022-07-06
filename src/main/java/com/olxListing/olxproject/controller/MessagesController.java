@@ -3,6 +3,7 @@ package com.olxListing.olxproject.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +24,12 @@ public class MessagesController {
 	MessagesService messagesService;
 	
 	@GetMapping("/seeAllCustomerMessages/{email}")
-	public List<CustomerMessages> getCustomerMessages(@PathVariable("email") String email){
+	public ResponseEntity<?> getCustomerMessages(@PathVariable("email") String email){
 		return messagesService.getCustomerMessages(email);
 	}
 	
 	@GetMapping("/seeAllAdminMessages/{email}")
-	public List<AdminMessages> getAdminMessages(@PathVariable("email") String email){
+	public ResponseEntity<?> getAdminMessages(@PathVariable("email") String email){
 		return messagesService.getAdminMessages(email);
 	}
 	

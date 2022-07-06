@@ -18,10 +18,10 @@ public class CustomerMessages {
 	int id;
 	
 	@OneToOne
-	User_Entity user1;
+	User_Entity sender;
 	
 	@OneToOne
-	User_Entity user2;
+	User_Entity receiver;
 	
 	String senderEmail;
 	
@@ -35,12 +35,12 @@ public class CustomerMessages {
 	}
 
 
-	public CustomerMessages(int id, User_Entity user1, User_Entity user2, String senderEmail, String receiverMail,
+	public CustomerMessages(int id, User_Entity sender, User_Entity receiver, String senderEmail, String receiverMail,
 			String message) {
 		super();
 		this.id = id;
-		this.user1 = user1;
-		this.user2 = user2;
+		this.sender = sender;
+		this.receiver = receiver;
 		this.senderEmail = senderEmail;
 		this.receiverMail = receiverMail;
 		this.message = message;
@@ -57,23 +57,23 @@ public class CustomerMessages {
 	}
 
 	@JsonBackReference(value = "location-movement")
-	public User_Entity getUser1() {
-		return user1;
+	public User_Entity getsender() {
+		return sender;
 	}
 
 
-	public void setUser1(User_Entity user1) {
-		this.user1 = user1;
+	public void setsender(User_Entity sender) {
+		this.sender = sender;
 	}
 
 	@JsonBackReference
-	public User_Entity getUser2() {
-		return user2;
+	public User_Entity getreceiver() {
+		return receiver;
 	}
 
 
-	public void setUser2(User_Entity user2) {
-		this.user2 = user2;
+	public void setreceiver(User_Entity receiver) {
+		this.receiver = receiver;
 	}
 
 

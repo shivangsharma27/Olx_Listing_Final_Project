@@ -2,6 +2,7 @@ package com.olxListing.olxproject.services;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.olxListing.olxproject.entity.AdminMessages;
@@ -14,8 +15,8 @@ public interface MessagesService {
 
 	String addAdminMessages(AdminMessages am);
 
-	List<CustomerMessages> getCustomerMessages(String email);
+	ResponseEntity<?> getCustomerMessages(String email);
 
-	List<AdminMessages> getAdminMessages(String email);
+	ResponseEntity<?> getAdminMessages(String email);
 	
 }

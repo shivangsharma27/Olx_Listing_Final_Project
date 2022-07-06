@@ -22,8 +22,8 @@ public class LocationController {
 		return locationRepo.findAll();
 	}
 	
-	@PostMapping("/postLocations")
-	public void addLocation(@RequestBody Location location) {
-		locationRepo.save(location);
-	}
+//	@PostMapping("/postLocations")
+//	public void addLocation(@RequestBody Location location) {
+//		locationRepo.save(location);
+//	}
 }

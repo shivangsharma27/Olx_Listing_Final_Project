@@ -13,17 +13,17 @@ import com.olxListing.olxproject.entity.User_Entity;
 
 @Service
 public interface UserService {
-	public String registerUser(User_Entity b);
+	public ResponseEntity<String> registerUser(User_Entity b);
 
 	public ResponseEntity<?> display();
 
 	public User_Entity updateUser(User_Entity b);
 	
-	public String deleteUserEntity(int id);
+	public ResponseEntity<String> deleteUserEntity(int id);
 	
-	public List<Listing> displayUserListing(int id);
+	public ResponseEntity<?> displayUserListing(int id);
 
-	public String deactivateListing(String email, int id);
+	public ResponseEntity<String> deactivateListing(String email, int id);
 
 	public ResponseEntity<String> addBookmark(Bookmark bookmark);
 	

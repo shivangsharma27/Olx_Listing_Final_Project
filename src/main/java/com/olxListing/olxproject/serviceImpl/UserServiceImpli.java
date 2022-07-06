@@ -30,15 +30,15 @@ public class UserServiceImpli implements UserService {
 	
 	@Autowired Bookmark_Repo bookmarkRepo;
 	
-	public String registerUser(User_Entity b) {
+	public ResponseEntity<String> registerUser(User_Entity b) {
 		try {
 			
 				userRepo.save(b);
-				return "Registration Successful";
+				return  new ResponseEntity<String>("Registration Successful",HttpStatus.OK);
            
 			
 		}catch(Exception e) {
-			return "Enter details correctly";
+			return new ResponseEntity<String>("Enter details correctly",HttpStatus.BAD_REQUEST);
 		}
 		 
 		
@@ -47,10 +47,13 @@ public class UserServiceImpli implements UserService {
 	public ResponseEntity<?> display()
 	{
         try {
-        	return ResponseEntity.ok(userRepo.findAll());
+        	if(!userRepo.findAll().isEmpty())
+        		return ResponseEntity.ok(userRepo.findAll());
+        	else 
+        		return new ResponseEntity<String>("No customers availabe....",HttpStatus.BAD_REQUEST);
         }
         catch(Exception e){
-        	return ResponseEntity.badRequest().body("No customer..");
+        	return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
 	}
 
@@ -60,29 +63,47 @@ public class UserServiceImpli implements UserService {
 	}
 
 	@Override
-	public String deleteUserEntity(int id) {
-		userRepo.deleteById(id);
-		return "User is deleted Successfully!";
-	}
-
-	@Override
-	public List<Listing> displayUserListing(int id) {
-		User_Entity user = userRepo.findById(id).get();
-		
-		return user.getListings();
-	}
-
-	@Override
-	public String deactivateListing(String email, int id) {
-		User_Entity user = userRepo.findBymail(email);
-		if(user.isActivate() && user.isLoggedIn()) {
-			Listing listing = listingRepo.findById(id).get();
-			listing.setIsactivate(false);
-			listingRepo.save(listing);
-			
-			return "Listing is deactivated successfully!";
+	public ResponseEntity<String> deleteUserEntity(int id) {
+		try {
+			userRepo.deleteById(id);
+			return new ResponseEntity<String>( "User is deleted Successfully!",HttpStatus.OK);
 		}
-		return "User is not logged In";
+		catch(Exception e) {
+			return new ResponseEntity<String>("id is invalid.....",HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+
+	@Override
+	public ResponseEntity<?> displayUserListing(int id) {
+		try {
+			User_Entity user = userRepo.findById(id).get();
+			if(!user.getListings().isEmpty())
+				return new ResponseEntity<List<Listing>>(user.getListings(),HttpStatus.OK);
+			else
+				return new ResponseEntity<String>("No listings available for the customer.....",HttpStatus.BAD_REQUEST);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("Invalid id",HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+
+	@Override
+	public ResponseEntity<String> deactivateListing(String email, int id) {
+		try {
+			User_Entity user = userRepo.findBymail(email);
+			if(user.isActivate() && user.isLoggedIn()) {
+				Listing listing = listingRepo.findById(id).get();
+				listing.setIsactivate(false);
+				listingRepo.save(listing);
+				
+				return new ResponseEntity<String>("Listing is deactivated successfully!",HttpStatus.OK);
+			}
+			return new ResponseEntity<String>("User is not logged In",HttpStatus.BAD_REQUEST);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("Invalid email or id",HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 
 	@Override

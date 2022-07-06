@@ -67,7 +67,7 @@ public class AdminController {
 	}
 	
 	@PutMapping("/updateCustomer/{email}")
-	public String updateCustomer(@PathVariable("email") String email, @RequestBody User_Entity user) {
+	public ResponseEntity<String> updateCustomer(@PathVariable("email") String email, @RequestBody User_Entity user) {
 		return adminService.updateCustomer(email, user);
 	}
 	

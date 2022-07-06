@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService{
 	Listing_Repo listingRepo;
 
 	@Override
-	public String updateCustomer(String email, User_Entity user) {
+	public ResponseEntity<String> updateCustomer(String email, User_Entity user) {
 		try {
 			Admin admin = adminRepo.findAll().get(0);
 			
@@ -42,7 +42,7 @@ public class AdminServiceImpl implements AdminService{
 				User_Entity curr_user = userRepo.findBymail(email);
 				
 				if(curr_user == null) {
-					return "Please enter a valid mail";
+					return new ResponseEntity<String> ("Please enter a valid mail",HttpStatus.BAD_REQUEST);
 				}
 				
 				if(user.getName() != null)
@@ -63,15 +63,15 @@ public class AdminServiceImpl implements AdminService{
 				
 				userRepo.save(curr_user);
 				
-				return "User data updated Successfully!";
+				return new ResponseEntity<String> ("User data updated Successfully!",HttpStatus.OK);
 			}
 			
-			return "You are not an admin";
+			return new ResponseEntity<String> ("You are not an admin",HttpStatus.BAD_REQUEST);
 			
 		}
 		
 		catch(Exception e) {
-			return "Please enter an email";
+			return new ResponseEntity<String>("Please enter an email",HttpStatus.BAD_REQUEST);
 		}
 		}
 		

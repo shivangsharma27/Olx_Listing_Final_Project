@@ -29,7 +29,7 @@ public class MainController {
 	private UserService userService;
 	
 	@PostMapping("/register")
-	public String userRegisterd(@RequestBody User_Entity b )
+	public ResponseEntity<String> userRegisterd(@RequestBody User_Entity b )
 	{
 		return userService.registerUser(b);
 		
@@ -48,18 +48,18 @@ public class MainController {
 	}
 	
 	@GetMapping("/displayListings/{id}")
-	public List<Listing> displayUserListings(@PathVariable("id") int id){
+	public ResponseEntity<?> displayUserListings(@PathVariable("id") int id){
 		return userService.displayUserListing(id);
 	}
 
 	
 	@PutMapping("/deactivateListing/{email}/{id}")
-	public String deactivateUser(@PathVariable("email") String email, @PathVariable("id") int id) {
+	public ResponseEntity<String> deactivateUser(@PathVariable("email") String email, @PathVariable("id") int id) {
 		return userService.deactivateListing(email, id);
 	}
 	
 	@DeleteMapping("/register/{id}")
-	public String deleteUserEntity(@PathVariable("id") int id) {
+	public ResponseEntity<String> deleteUserEntity(@PathVariable("id") int id) {
 		return userService.deleteUserEntity(id);	
 	}
 }
