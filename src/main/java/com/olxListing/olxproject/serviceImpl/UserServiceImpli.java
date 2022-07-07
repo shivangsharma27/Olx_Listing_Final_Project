@@ -30,9 +30,11 @@ public class UserServiceImpli implements UserService {
 	
 	@Autowired Bookmark_Repo bookmarkRepo;
 	
+	// REGISTER A NEW USER--------------------
+	
 	public ResponseEntity<String> registerUser(User_Entity b) {
 		try {
-			
+			    //	saving the details in the request body into the database of the users.
 				userRepo.save(b);
 				return  new ResponseEntity<String>("Registration Successful",HttpStatus.OK);
            
@@ -44,9 +46,35 @@ public class UserServiceImpli implements UserService {
 		
 	}
 	
+	// BOOKMARK A PRODUCT---------------------
+
+		@Override
+		public ResponseEntity<String> addBookmark(Bookmark bookmark) {
+			try {
+				// getting the complete details of the user using userId
+				int user_id = bookmark.getUserId().getId();
+				User_Entity user = userRepo.findById(user_id).get();
+				
+				// checking the status of the user whether he is logged in or not
+				if(user.isActivate() && user.isLoggedIn()) {
+					// if yes then save the product id and user id in database
+					bookmarkRepo.save(bookmark);
+					return new ResponseEntity<String>("Bookmark is added successfully!",HttpStatus.OK);
+				}
+				return new ResponseEntity<String>("User is not logged In",HttpStatus.BAD_REQUEST);
+			}
+			catch(Exception e) {
+				return new ResponseEntity<String>("Invalid details", HttpStatus.BAD_REQUEST);
+			}
+			
+			
+		}
+		
+	// DISPLAY ALL CUSTOMERS------------------	
 	public ResponseEntity<?> display()
 	{
         try {
+        	// checking if database is empty or not
         	if(!userRepo.findAll().isEmpty())
         		return ResponseEntity.ok(userRepo.findAll());
         	else 
@@ -57,11 +85,9 @@ public class UserServiceImpli implements UserService {
         }
 	}
 
-	@Override
-	public User_Entity updateUser(User_Entity b) {
-		return userRepo.save(b);
-	}
-
+	
+	// DELETE ANY CUSTOMER'S ACCOUNT--------------
+	
 	@Override
 	public ResponseEntity<String> deleteUserEntity(int id) {
 		try {
@@ -74,6 +100,7 @@ public class UserServiceImpli implements UserService {
 		
 	}
 
+	// DISPLAY THE LISTINGS OF PARTICULAR USER-------------
 	@Override
 	public ResponseEntity<?> displayUserListing(int id) {
 		try {
@@ -88,6 +115,8 @@ public class UserServiceImpli implements UserService {
 		
 	}
 
+	// DEACTIVATE THE LISTING----------------------
+	
 	@Override
 	public ResponseEntity<String> deactivateListing(String email, int id) {
 		try {
@@ -105,25 +134,8 @@ public class UserServiceImpli implements UserService {
 		}
 		
 	}
-
-	@Override
-	public ResponseEntity<String> addBookmark(Bookmark bookmark) {
-		try {
-			int user_id = bookmark.getUserId().getId();
-			User_Entity user = userRepo.findById(user_id).get();
-			
-			if(user.isActivate() && user.isLoggedIn()) {
-				bookmarkRepo.save(bookmark);
-				return new ResponseEntity<String>("Bookmark is added successfully!",HttpStatus.OK);
-			}
-			return new ResponseEntity<String>("User is not logged In",HttpStatus.BAD_REQUEST);
-		}
-		catch(Exception e) {
-			return new ResponseEntity<String>("Invalid details", HttpStatus.BAD_REQUEST);
-		}
-		
-		
-	}
+	
+	
 		
 
 }

@@ -23,20 +23,28 @@ public class MessagesController {
 	@Autowired
 	MessagesService messagesService;
 	
+	// SEE ALL THE MESSAGES FROM OR TO THE CUSTOMERS-----------------
+	
 	@GetMapping("/seeAllCustomerMessages/{email}")
 	public ResponseEntity<?> getCustomerMessages(@PathVariable("email") String email){
 		return messagesService.getCustomerMessages(email);
 	}
+	
+	// SEE ALL THE MESSAGES FROM OR TO THE ADMINS-----------------
 	
 	@GetMapping("/seeAllAdminMessages/{email}")
 	public ResponseEntity<?> getAdminMessages(@PathVariable("email") String email){
 		return messagesService.getAdminMessages(email);
 	}
 	
+	// SEND MESSAGES FROM CUSTOMER TO CUSTOMER----------------
+	
 	@PostMapping("/customerToCustomerMessages")
 	public String addMessages(@RequestBody CustomerMessages cm) {
 		return messagesService.addMessages(cm);
 	}
+	
+	// SEND MESSAGES FROM ADMIN TO CUSTOMER----------------
 	
 	@PostMapping("/adminTOCustomerMessages")
 	public String addAdminMessages(@RequestBody AdminMessages am) {

@@ -32,7 +32,70 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Autowired
 	Listing_Repo listingRepo;
+	
+	// TO REGISTER AN ADMIN ----------------------
+	@Override
+	public String registerAdmin(Admin admin) {
+		if(admin.getEmail()==null ){
+			return "Please enter mail";
+		}
+		else if(admin.getPassword()==null) {
+			return "Please enter your password";
+		}
+		adminRepo.save(admin);
+		return "Admin is registered Successfully!";
+	}
+	
+	// TO LOGIN THE ADMIN----------------------
+	@Override
+	public String loginAdmin(Login login) {
+		if(adminRepo.findByemail(login.getEmail()) != null) {
+			Admin admin = adminRepo.findByemail(login.getEmail());
+			
+			if(login.getPassword().equals(admin.getPassword())) {
+				admin.setLoggedIn(true);
+				adminRepo.save(admin);
+				return "Admin Logged In Successfully!";
+			}
+			else {
+				return "Invalid Password";
+			}
+		}
+		
+		else {
+			return "Invalid Credentials";
+		}
+	}
+	
+	// TO SEE THE LIST OF ALL THE ADMINS-------------------
+	@Override
+	public ResponseEntity<?> getAllAdmin() {
+		if(!adminRepo.findAll().isEmpty()) {
+			return new ResponseEntity<List<Admin>>(adminRepo.findAll(),HttpStatus.OK);
+		}
+		else
+			return new ResponseEntity<String>("No Admins available..",HttpStatus.BAD_REQUEST);
+		
+		
+	}
 
+	// TO SEE THE LIST OF CUSTOMERS-----------------
+	@Override
+	public ResponseEntity<?> seeCustomers() {
+		Admin admin = adminRepo.findAll().get(0);
+		try {
+			if(admin.isLoggedIn()) 
+				return new ResponseEntity<List<User_Entity>>(userRepo.findAll(), HttpStatus.OK);
+			return new ResponseEntity<String>("Admin not logged in ",HttpStatus.BAD_REQUEST);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<String>("No cutomers available",HttpStatus.BAD_REQUEST);
+		}
+		
+			
+	}
+	
+	// TO UPDATE THE DETAILS OF ANY USER-----------------
 	@Override
 	public ResponseEntity<String> updateCustomer(String email, User_Entity user) {
 		try {
@@ -76,126 +139,7 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 
-	@Override
-	public ResponseEntity<?> seeCustomers() {
-		Admin admin = adminRepo.findAll().get(0);
-		try {
-			if(admin.isLoggedIn()) 
-				return new ResponseEntity<List<User_Entity>>(userRepo.findAll(), HttpStatus.OK);
-			return new ResponseEntity<String>("Admin not logged in ",HttpStatus.BAD_REQUEST);
-		}
-		catch(Exception e) {
-			return new ResponseEntity<String>("No cutomers available",HttpStatus.BAD_REQUEST);
-		}
-		
-			
-	}
-
-	@Override
-	public ResponseEntity<String> deactivateUser(String email) {
-		Admin admin = adminRepo.findAll().get(0);
-		try {
-			if(admin.isLoggedIn()) {
-				User_Entity user = userRepo.findBymail(email);
-				user.setActivate(false);
-				userRepo.save(user);
-				
-				return new ResponseEntity<String>("Customer is deactivated successfully!",HttpStatus.OK);
-			}
-			
-			return new ResponseEntity<String>("You are not an admin!",HttpStatus.BAD_REQUEST);
-		}catch(Exception e) {
-			return new ResponseEntity<String>("email is invalid",HttpStatus.BAD_REQUEST);
-		}
-		
-	}
-
-	@Override
-	public String registerAdmin(Admin admin) {
-		if(admin.getEmail()==null ){
-			return "Please enter mail";
-		}
-		else if(admin.getPassword()==null) {
-			return "Please enter your password";
-		}
-		adminRepo.save(admin);
-		return "Admin is registered Successfully!";
-	}
-
-	@Override
-	public String loginAdmin(Login login) {
-		if(adminRepo.findByemail(login.getEmail()) != null) {
-			Admin admin = adminRepo.findByemail(login.getEmail());
-			
-			if(login.getPassword().equals(admin.getPassword())) {
-				admin.setLoggedIn(true);
-				adminRepo.save(admin);
-				return "Admin Logged In Successfully!";
-			}
-			else {
-				return "Invalid Password";
-			}
-		}
-		
-		else {
-			return "Invalid Credentials";
-		}
-	}
-
-	@Override
-	public ResponseEntity<?> getAllAdmin() {
-		if(!adminRepo.findAll().isEmpty()) {
-			return new ResponseEntity<List<Admin>>(adminRepo.findAll(),HttpStatus.OK);
-		}
-		else
-			return new ResponseEntity<String>("No Admins available..",HttpStatus.BAD_REQUEST);
-		
-		
-	}
-
-	@Override
-	public ResponseEntity<String> activateUser(String mail) {
-		Admin admin = adminRepo.findAll().get(0);
-		try {
-			if(admin.isLoggedIn()) {
-				User_Entity user = userRepo.findBymail(mail);
-				user.setActivate(true);
-				userRepo.save(user);
-				
-				return new ResponseEntity<String>("Customer is activated successfully!",HttpStatus.OK);
-			}
-			
-			return new ResponseEntity<String>("You are not an admin!",HttpStatus.BAD_REQUEST);
-		}catch(Exception e) {
-			return new ResponseEntity<String>("email is invalid",HttpStatus.BAD_REQUEST);
-		}
-	}
-
-	@Override
-	public String logoutAdmin() {
-		Admin admin = adminRepo.findAll().get(0);
-		admin.setLoggedIn(false);
-		adminRepo.save(admin);
-		return "Logged out successfully!";
-	}
-
-	@Override
-	public String removeListing(int id) {
-		Admin admin = adminRepo.findAll().get(0);
-		
-		
-		if(admin.isLoggedIn()) {
-			try {
-			listingRepo.deleteById(id);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			return "Listing is removed successfully!";
-		}
-		
-		return "You are not an admin";
-	}
-
+	// TO SEE ALL THE ACTIVE USERS ON THE PORTAL--------------
 	@Override
 	public ResponseEntity<?> getActiveUsers() {
          Admin admin = adminRepo.findAll().get(0);
@@ -219,11 +163,9 @@ public class AdminServiceImpl implements AdminService{
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
-		
-		
-		
-	}
-
+}
+	
+	// TO SEE THE PRODUCTS LISTED BY A PARTICULAR USER-------------------
 	@Override
 	public ResponseEntity<?> getListingOfUser(String email) {
 		try {
@@ -240,6 +182,8 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 	}
+	
+	// TO SEE THE LIST OF EXPIRED PRODUCTS -------------------
 
 	@Override
 	public ResponseEntity<?> getExpiredListing() {
@@ -268,5 +212,75 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 	}
+
+	
+	// TO DEACTIVATE ANY USER-----------------
+	@Override
+	public ResponseEntity<String> deactivateUser(String email) {
+		Admin admin = adminRepo.findAll().get(0);
+		try {
+			if(admin.isLoggedIn()) {
+				User_Entity user = userRepo.findBymail(email);
+				user.setActivate(false);
+				userRepo.save(user);
+				
+				return new ResponseEntity<String>("Customer is deactivated successfully!",HttpStatus.OK);
+			}
+			
+			return new ResponseEntity<String>("You are not an admin!",HttpStatus.BAD_REQUEST);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("email is invalid",HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+
+	
+	// TO ACTIVATE ANY USER---------------------
+	@Override
+	public ResponseEntity<String> activateUser(String mail) {
+		Admin admin = adminRepo.findAll().get(0);
+		try {
+			if(admin.isLoggedIn()) {
+				User_Entity user = userRepo.findBymail(mail);
+				user.setActivate(true);
+				userRepo.save(user);
+				
+				return new ResponseEntity<String>("Customer is activated successfully!",HttpStatus.OK);
+			}
+			
+			return new ResponseEntity<String>("You are not an admin!",HttpStatus.BAD_REQUEST);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("email is invalid",HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	// TO REMOVE ANY LISTING--------------------
+	@Override
+	public String removeListing(int id) {
+		Admin admin = adminRepo.findAll().get(0);
+		
+		
+		if(admin.isLoggedIn()) {
+			try {
+			listingRepo.deleteById(id);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return "Listing is removed successfully!";
+		}
+		
+		return "You are not an admin";
+	}
+
+	// TO LOGOUT THE ADMIN
+	@Override
+	public String logoutAdmin() {
+		Admin admin = adminRepo.findAll().get(0);
+		admin.setLoggedIn(false);
+		adminRepo.save(admin);
+		return "Logged out successfully!";
+	}
+
+	
 
 }

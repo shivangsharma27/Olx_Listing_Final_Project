@@ -15,11 +15,15 @@ public class LoginController {
 	@Autowired 
 	LoginService loginService;
 	
+	// LOGIN USER-------------
+	
 	@GetMapping("/login")
 	public String loginUser(@RequestBody Login login) {
 		return loginService.loginUser(login);
 	}
 	
+	
+	// LOGOUT THE USER BY USING EMAIL AS PATH VARIABLE--------------
 	@GetMapping("/logout/{email}")
 	public String logoutUser(@PathVariable("email") String email) {
 		return loginService.logoutUser(email);

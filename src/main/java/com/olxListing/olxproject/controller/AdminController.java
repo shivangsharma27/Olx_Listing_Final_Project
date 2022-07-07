@@ -26,67 +26,94 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 	
+	// TO REGISTER AN ADMIN ----------------------
+	
 	@PostMapping("/register")
 	public String registerAdmin(@RequestBody Admin admin) {
 		return adminService.registerAdmin(admin);
 	}
 	
-	@GetMapping("/seeCustomer")
-	public ResponseEntity<?> seeCustomers(){
-		return adminService.seeCustomers();
-	}
+	// TO LOGIN THE ADMIN----------------------
 	
-	@GetMapping("/login")
-	public String loginAdmin(@RequestBody Login login) {
-		return adminService.loginAdmin(login);
-	}
+		@GetMapping("/login")
+		public String loginAdmin(@RequestBody Login login) {
+			return adminService.loginAdmin(login);
+		}
+		
+
+	// TO SEE THE LIST OF ALL THE ADMINS-------------------
+		
+		@GetMapping("/seeAll")
+		public ResponseEntity<?> getAllAdmin(){
+			return adminService.getAllAdmin();
+		}
 	
-	@GetMapping("/seeAll")
-	public ResponseEntity<?> getAllAdmin(){
-		return adminService.getAllAdmin();
-	}
+	// TO SEE THE LIST OF CUSTOMERS-----------------
 	
-	@GetMapping("/seeActiveUsers")
-	public ResponseEntity<?> getActiveUsers(){
-		return adminService.getActiveUsers();
-	}
+		@GetMapping("/seeCustomer")
+		public ResponseEntity<?> seeCustomers(){
+			return adminService.seeCustomers();
+		}
 	
-	@GetMapping("/getListingOfUser/{email}")
-	public ResponseEntity<?> getListingOfUser(@PathVariable("email") String email){
-		return adminService.getListingOfUser(email);
-	}
+	// TO UPDATE THE DETAILS OF ANY USER-----------------
 	
-	@GetMapping("/logout")
-	public String logoutAdmin() {
-		return adminService.logoutAdmin();
-	}
+		@PutMapping("/updateCustomer/{email}")
+		public ResponseEntity<String> updateCustomer(@PathVariable("email") String email, @RequestBody User_Entity user) {
+			return adminService.updateCustomer(email, user);
+		}
+	
+	
+	// TO SEE ALL THE ACTIVE USERS ON THE PORTAL--------------
+	
+		@GetMapping("/seeActiveUsers")
+		public ResponseEntity<?> getActiveUsers(){
+			return adminService.getActiveUsers();
+		}
+		
+	// TO SEE THE PRODUCTS LISTED BY A PARTICULAR USER-------------------
+	
+		@GetMapping("/getListingOfUser/{email}")
+		public ResponseEntity<?> getListingOfUser(@PathVariable("email") String email){
+			return adminService.getListingOfUser(email);
+		}
+	
+	
+	
+	// TO SEE THE LIST OF EXPIRED PRODUCTS -------------------
 	
 	@GetMapping("/seeExpiredListing")
 	public ResponseEntity<?> getExpiredListing(){
 		return adminService.getExpiredListing();
 	}
 	
-	@PutMapping("/updateCustomer/{email}")
-	public ResponseEntity<String> updateCustomer(@PathVariable("email") String email, @RequestBody User_Entity user) {
-		return adminService.updateCustomer(email, user);
-	}
+	
+	
+	// TO DEACTIVATE ANY USER-----------------
 	
 	@PutMapping("/deactivateCustomer/{mail}")
 	public ResponseEntity<String> deactivateUser(@PathVariable("mail") String mail) {
 		return adminService.deactivateUser(mail);
 	}
 	
+	// TO ACTIVATE ANY USER---------------------
+	
 	@PutMapping("/activateCustomer/{mail}")
 	public ResponseEntity<String> activateUser(@PathVariable("mail") String mail) {
 		return adminService.activateUser(mail);
 	}
 	
-	
+	// TO REMOVE ANY LISTING--------------------
 	
 	@DeleteMapping("/removeListing/{id}")
 	public String removeListing(@PathVariable("id") int id) {
 		return adminService.removeListing(id);
 	}
 	
+	// TO LOGOUT THE ADMIN---------------
+	
+		@GetMapping("/logout")
+		public String logoutAdmin() {
+			return adminService.logoutAdmin();
+		}
 
 }

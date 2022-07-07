@@ -17,9 +17,11 @@ public class AdminMessages {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int id;
 	
+	// Mapped with the admin entity
 	@OneToOne
 	Admin admin;
 	
+	// Mapped with the user entity
 	@OneToOne
 	User_Entity user;
 	

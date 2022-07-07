@@ -28,6 +28,9 @@ public class MainController {
 	@Autowired
 	private UserService userService;
 	
+	
+	// REGISTER A NEW USER--------------------
+	
 	@PostMapping("/register")
 	public ResponseEntity<String> userRegisterd(@RequestBody User_Entity b )
 	{
@@ -35,11 +38,14 @@ public class MainController {
 		
 	}
 
+	// BOOKMARK A PRODUCT---------------------
 	
 	@PostMapping("/bookmarkListing")
 	public ResponseEntity<String> addBookmark(@RequestBody Bookmark bookmark) {
 		return userService.addBookmark(bookmark);
 	}
+	
+	// DISPLAY ALL CUSTOMERS----------------
 	
 	@GetMapping("/displayAll")
 	public ResponseEntity<?> display()
@@ -47,16 +53,21 @@ public class MainController {
 		return userService.display();
 	}
 	
+	// DISPLAY THE LISTINGS OF PARTICULAR USER-------------
+	
 	@GetMapping("/displayListings/{id}")
 	public ResponseEntity<?> displayUserListings(@PathVariable("id") int id){
 		return userService.displayUserListing(id);
 	}
 
+	// DEACTIVATE THE LISTING----------------------
 	
 	@PutMapping("/deactivateListing/{email}/{id}")
 	public ResponseEntity<String> deactivateUser(@PathVariable("email") String email, @PathVariable("id") int id) {
 		return userService.deactivateListing(email, id);
 	}
+	
+	// DELETE ANY CUSTOMER'S ACCOUNT--------------
 	
 	@DeleteMapping("/register/{id}")
 	public ResponseEntity<String> deleteUserEntity(@PathVariable("id") int id) {

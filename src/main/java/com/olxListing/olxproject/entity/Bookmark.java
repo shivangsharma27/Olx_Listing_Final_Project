@@ -16,9 +16,11 @@ public class Bookmark {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int id;
 	
+	// ManytoOne mapping with user entity because 1 user can have more than 1 bookmarks.
 	@ManyToOne
 	User_Entity userId;
 	
+	//OneToOne mapping with listing entity because 1 product id in bookmark will have only 1 product details in listing
 	@OneToOne
 	Listing listing;
 

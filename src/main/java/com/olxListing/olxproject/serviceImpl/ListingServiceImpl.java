@@ -26,6 +26,8 @@ public class ListingServiceImpl implements ListingService{
 	@Autowired
 	User_Repo userRepo;
 	
+	// ADD A NEW PRODUCT--------------------------
+	
 	@Override
 	public ResponseEntity<String> addListing(Listing listing) {
 		try {
@@ -49,6 +51,8 @@ public class ListingServiceImpl implements ListingService{
 		
 	}
 
+	// DISPLAY ALL THE LISTINGS-----------------
+	
 	@Override
 	public ResponseEntity<?> displayListings() {
 		try {
@@ -62,6 +66,8 @@ public class ListingServiceImpl implements ListingService{
 		
 	}
 
+	// GET CONTACT DETAILS OF THE PARTICULAR PRODUCT-------------
+	
 	@Override
 	public ResponseEntity<?> displayContactDetails(int id) {
 		try {
@@ -73,11 +79,16 @@ public class ListingServiceImpl implements ListingService{
 		
 	}
 
+	// UPDATE LISTINGS DETAILS------------------
+	
 	@Override
 	public Listing updateListing(Listing listing) {
 		return listingRepo.save(listing);
 	}
 
+	
+	// SEARCH PRODUCTS ACCORDING TO CATEGORY--------------
+	
 	@Override
 	public ResponseEntity<?> searchUsingCategory(String category)  {
 		try {
@@ -91,6 +102,8 @@ public class ListingServiceImpl implements ListingService{
 		
 	}
 
+	// SEARCH PRODUCTS ACCORDING TO CITY--------------------
+	
 	@Override
 	public ResponseEntity<?> searchUsingLocation(String city) {
 		List<Listing> ListOfAllLocations = listingRepo.findAll();
@@ -111,6 +124,8 @@ public class ListingServiceImpl implements ListingService{
 		
 	}
 
+	// SEARCH PRODUCTS LESS THAN THE ENTERED PRICE----------------
+	
 	@Override
 	public ResponseEntity<?> searchUsingPrice(int price) {
 		if(!listingRepo.findItemsByPrice(price).isEmpty())
@@ -119,6 +134,8 @@ public class ListingServiceImpl implements ListingService{
 			return new ResponseEntity<String>("No items available below this price",HttpStatus.BAD_REQUEST);
 	}
 
+	// SORT THE PRODUCTS IN ASCENDING ORDER BASED ON THE PRICE-------------
+	
 	@Override
 	public ResponseEntity<?> sortListings() {
 		if(!listingRepo.findAll(Sort.by(Sort.Direction.ASC, "price")).isEmpty())

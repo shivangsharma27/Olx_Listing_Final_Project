@@ -21,6 +21,7 @@ import com.olxListing.olxproject.services.MessagesService;
 
 @Component
 public class MessagesServiceImpl implements MessagesService{
+	// AUTOWIRING ALL THE REPOSITORIES TO GET THE INBUILT FUNCTIONS TO BE PERFORMED ON RESPECTICE REPOSITORIES........
 	
 	@Autowired
 	CustomerMessagesRepo customerMessagesRepo;
@@ -34,6 +35,8 @@ public class MessagesServiceImpl implements MessagesService{
 	@Autowired 
 	Admin_Repo adminRepo;
 
+	// SEND MESSAGES FROM CUSTOMER TO CUSTOMER----------------
+	
 	@Override
 	public String addMessages(CustomerMessages cm) {
 		User_Entity user1 = userRepo.findBymail(cm.getsenderEmail());
@@ -56,6 +59,8 @@ public class MessagesServiceImpl implements MessagesService{
 		
 	}
 
+	// SEND MESSAGES FROM ADMIN TO CUSTOMER----------------
+	
 	@Override
 	public String addAdminMessages(AdminMessages am) {
 		Admin admin = adminRepo.findByemail(am.getadminMail());
@@ -77,6 +82,8 @@ public class MessagesServiceImpl implements MessagesService{
 		}
 	}
 
+	// SEE ALL THE MESSAGES FROM OR TO THE CUSTOMERS-----------------
+	
 	@Override
 	public ResponseEntity<?> getCustomerMessages(String email) {
 		try {
@@ -98,6 +105,8 @@ public class MessagesServiceImpl implements MessagesService{
 		
 	}
 
+	// SEE ALL THE MESSAGES FROM OR TO THE ADMINS-----------------
+	
 	@Override
 	public ResponseEntity<?> getAdminMessages(String email) {
 		try {

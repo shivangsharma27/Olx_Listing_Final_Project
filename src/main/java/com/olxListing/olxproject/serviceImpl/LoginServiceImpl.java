@@ -14,6 +14,8 @@ public class LoginServiceImpl implements LoginService{
 	@Autowired
 	User_Repo userRepo;
 
+	// LOGIN USER-----------------
+	
 	@Override
 	public String loginUser(Login login) {
 		if(userRepo.findBymail(login.getEmail()) != null) {
@@ -34,6 +36,8 @@ public class LoginServiceImpl implements LoginService{
 		}
 	}
 
+	// LOGOUT THE USER BY USING EMAIL AS PATH VARIABLE--------------
+	
 	@Override
 	public String logoutUser(String email) {
 		try {

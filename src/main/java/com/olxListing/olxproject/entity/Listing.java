@@ -41,17 +41,21 @@ public class Listing {
 	
 	boolean isactivate = true;
 	
+	// for entering dates of listing any product and their expiry dates
+	
 	Calendar calendar = Calendar.getInstance();
 	Date date = calendar.getTime();// print today's date\
 	
 	Date expiryDate;
-			
+		
+	// OneToOne mapping with location to map one item with one location
 	@OneToOne(cascade = CascadeType.ALL)
 	Location location;
 	
-	
+	// ManyToOne mapping with user because more than one product can belong to one user
 	@ManyToOne
 	User_Entity userEntity;
+	
 	
 	public Listing() {
 		super();
@@ -118,6 +122,7 @@ public class Listing {
 		this.location = location;
 	}
 
+	// to avoid looping while fetching data
 	@JsonBackReference
 	public User_Entity getUserEntity() {
 		return userEntity;
